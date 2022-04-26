@@ -1,9 +1,9 @@
 """
-example01 -
+example03 -
 
 @IDE:   PyCharm
 @Author:石少全
-@Date:2022/4/25 11:16 
+@Date:2022/4/26 9:28 
 @Description: ---
 
 
@@ -16,15 +16,16 @@ def main():
     # loc = input('部门的新地址')
     conn = pymysql.connect(host='182.92.217.5', port=3306,
                            user='root', password='shishaoquan123.A',
-                           db='school', charset='utf8')
+                           db='school', charset='utf8',
+                           cursorclass=pymysql.cursors.DictCursor)
     try:
         with conn.cursor() as cursor:
-            cursor.execute('select dno,dname,dloc from tb_dept')
+            cursor.execute('select dno as no,dname as name,dloc as loc from tb_dept')
             for row in cursor.fetchall():
-                print(f'部门编号：{row[0]}')
-                print(f'部门名称：{row[1]}')
-                print(f'部门所在地：{row[2]}')
-                print('-'*20)
+                print(row['no'],end='\t')
+                print(row['name'],end='\t')
+                print(row['loc'],end='\t')
+
     except pymysql.MySQLError as error:
         print(error)
         conn.rollback()
